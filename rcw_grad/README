@@ -1,0 +1,20 @@
+** A more formal implementation that can be installed with pip:
+https://github.com/weiliangjinca/grcwa
+
+
+This code is modified from Victor Liu's S4 that was implemented in
+C. It's now a python (works on both v2.7 and v3) code with AUTOGRAD
+supported.  Most features in S4's rcwa.cpp are implemented.
+
+Required package:
+-- mpi4py for parallel
+-- autograd for gradient
+-- nlopt for optimization
+
+If you find it useful for your research, please cite the following paper:
+   @article{Jin2020,
+     title = {Inverse design of lightweight broadband  reflector for efficient lightsail propulsion},
+     author ={Jin, Weiliang and Li, Wei and Orenstein, Meir and Fan, Shanhui},
+     year = {2020},
+     journal = {arXiv:2005.04840},
+   }
