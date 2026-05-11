@@ -18,7 +18,7 @@ The goal is to reproduce and explore periodic nanostructured “code mask” des
 
 ## Methods
 * Rigorous Coupled-Wave Analysis (RCWA)
-* Parameter sweeps over geometric variables (, a, b, d$)
+* Parameter sweeps over geometric variables (p, a, b, d)
 * Spectral transmission analysis across wavelength range
 
 ## Status
