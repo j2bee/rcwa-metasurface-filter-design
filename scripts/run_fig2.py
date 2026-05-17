@@ -127,6 +127,9 @@ def run_sweep(
     q_ref: float,
     period_nm: float | None = None,
     height_nm: float | None = None,
+    n_superstrate: float | None = None,
+    n_pillar: float | None = None,
+    n_substrate: float | None = None,
 ) -> np.ndarray:
     if num_wavelengths < 1:
         raise ValueError("num_wavelengths must be at least 1")
@@ -136,6 +139,9 @@ def run_sweep(
         diameter_nm=diameter_nm,
         period_nm=period_nm,
         height_nm=height_nm,
+        n_superstrate=n_superstrate,
+        n_pillar=n_pillar,
+        n_substrate=n_substrate,
         grid_shape=grid_shape,
     )
     wavelengths_nm = np.linspace(wavelength_start_nm, wavelength_stop_nm, num_wavelengths)
@@ -183,6 +189,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--diameter-nm", type=float, default=default_diameter_nm())
     parser.add_argument("--period-nm", type=float, default=None)
     parser.add_argument("--height-nm", type=float, default=None)
+    parser.add_argument("--n-superstrate", type=float, default=None)
+    parser.add_argument("--n-pillar", type=float, default=None)
+    parser.add_argument("--n-substrate", type=float, default=None)
     parser.add_argument("--grid-nx", type=int, default=128)
     parser.add_argument("--grid-ny", type=int, default=128)
     parser.add_argument("--wavelength-start-nm", type=float, default=start_nm)
@@ -209,12 +218,18 @@ def main() -> None:
             diameter_nm=args.diameter_nm,
             period_nm=args.period_nm,
             height_nm=args.height_nm,
+            n_superstrate=args.n_superstrate,
+            n_pillar=args.n_pillar,
+            n_substrate=args.n_substrate,
             grid_shape=grid_shape,
         )
         print("Figure 2 wavelength sweep configuration")
         print(f"  diameter_nm: {args.diameter_nm}")
         print(f"  period_nm: {args.period_nm}")
         print(f"  height_nm: {args.height_nm}")
+        print(f"  n_superstrate: {args.n_superstrate}")
+        print(f"  n_pillar: {args.n_pillar}")
+        print(f"  n_substrate: {args.n_substrate}")
         print(f"  grid_shape: {grid_shape}")
         print(f"  wavelength_nm: {args.wavelength_start_nm} to {args.wavelength_stop_nm}")
         print(f"  num_wavelengths: {args.num_wavelengths}")
@@ -233,6 +248,9 @@ def main() -> None:
         q_ref=args.q_ref,
         period_nm=args.period_nm,
         height_nm=args.height_nm,
+        n_superstrate=args.n_superstrate,
+        n_pillar=args.n_pillar,
+        n_substrate=args.n_substrate,
     )
     npy_path, csv_path = save_spectrum(spectrum, args.output_dir, args.output_stem)
     print(f"Saved NumPy spectrum: {npy_path}")

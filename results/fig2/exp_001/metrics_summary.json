@@ -1,0 +1,14 @@
+{
+  "resonance_wavelength_nm": 577.0,
+  "minimum_transmission": 0.9110038202455477,
+  "resonance_index": 122,
+  "reference_curve_present": false,
+  "bandwidth_fwhm_nm": 49.25949826430917,
+  "half_depth_transmission": 0.9548681807224064,
+  "left_half_depth_nm": 558.4843642759666,
+  "right_half_depth_nm": 607.7438625402758,
+  "reference_resonance_wavelength_nm": null,
+  "reference_minimum_transmission": null,
+  "resonance_shift_vs_reference_nm": null,
+  "minimum_transmission_delta_vs_reference": null
+}

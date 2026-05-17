@@ -81,6 +81,9 @@ def build_unit_cell_geometry(
     diameter_nm: float | None = None,
     period_nm: float | None = None,
     height_nm: float | None = None,
+    n_superstrate: float | None = None,
+    n_pillar: float | None = None,
+    n_substrate: float | None = None,
     grid_shape: tuple[int, int] = DEFAULT_GRID_SHAPE,
 ) -> dict[str, Any]:
     """Build the Figure 2 unit-cell geometry and rcwa_grad input payload."""
@@ -90,6 +93,12 @@ def build_unit_cell_geometry(
         period_nm = float(spec.UNIT_CELL["lattice"]["period"])
     if height_nm is None:
         height_nm = float(spec.UNIT_CELL["pillar"]["height"])
+    if n_superstrate is None:
+        n_superstrate = float(spec.MATERIALS["superstrate"]["refractive_index"])
+    if n_pillar is None:
+        n_pillar = float(spec.MATERIALS["pillar"]["refractive_index"])
+    if n_substrate is None:
+        n_substrate = float(spec.MATERIALS["substrate"]["refractive_index"])
 
     nx, ny = grid_shape
     if nx <= 0 or ny <= 0:
@@ -98,6 +107,8 @@ def build_unit_cell_geometry(
         raise ValueError("period_nm must be positive")
     if height_nm <= 0:
         raise ValueError("height_nm must be positive")
+    if n_superstrate <= 0 or n_pillar <= 0 or n_substrate <= 0:
+        raise ValueError("refractive indices must be positive")
 
     diameter_bounds = spec.UNIT_CELL["pillar"]["diameter"]
     if not (diameter_bounds["minimum"] <= diameter_nm <= diameter_bounds["maximum"]):
@@ -110,9 +121,9 @@ def build_unit_cell_geometry(
     dof_grid = _cylindrical_pillar_dof(diameter_nm, period_nm, grid_shape)
     dof_flat = _flatten_grid(dof_grid)
 
-    eps_air = _epsilon("superstrate")
-    eps_pillar = _epsilon("pillar")
-    eps_substrate = _epsilon("substrate")
+    eps_air = float(n_superstrate * n_superstrate)
+    eps_pillar = float(n_pillar * n_pillar)
+    eps_substrate = float(n_substrate * n_substrate)
     eps_background = eps_air
     eps_difference = eps_pillar - eps_background
 
@@ -177,7 +188,21 @@ def build_unit_cell_geometry(
     return {
         "source": deepcopy(spec.SOURCE),
         "units": deepcopy(spec.UNITS),
-        "materials": deepcopy(spec.MATERIALS),
+        "materials": {
+            **deepcopy(spec.MATERIALS),
+            "superstrate": {
+                **deepcopy(spec.MATERIALS["superstrate"]),
+                "refractive_index": n_superstrate,
+            },
+            "pillar": {
+                **deepcopy(spec.MATERIALS["pillar"]),
+                "refractive_index": n_pillar,
+            },
+            "substrate": {
+                **deepcopy(spec.MATERIALS["substrate"]),
+                "refractive_index": n_substrate,
+            },
+        },
         "unit_cell": {
             "lattice": {
                 "type": spec.UNIT_CELL["lattice"]["type"],

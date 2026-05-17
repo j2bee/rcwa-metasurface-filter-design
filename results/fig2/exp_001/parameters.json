@@ -1,0 +1,38 @@
+{
+  "geometry": {
+    "p": 443.0,
+    "a": 316.0,
+    "b": 316.0,
+    "d": 316.0,
+    "h": 633.0
+  },
+  "materials": {
+    "n_superstrate": 1.0,
+    "n_substrate": 1.45,
+    "n_pillar": 2.0
+  },
+  "wavelengths": {
+    "start_nm": 455.0,
+    "stop_nm": 625.0,
+    "num_points": 171
+  },
+  "rcwa": {
+    "harmonic_order": 101,
+    "grid_nx": 128,
+    "grid_ny": 128,
+    "q_ref": 10000000000.0
+  },
+  "safety": {
+    "allow_multiple_parameter_changes": false,
+    "multiple_parameter_change_reason": ""
+  },
+  "experiment_notes": {
+    "label": "baseline",
+    "qualitative_comparison_to_paper": "Reference state; paper curve not yet digitized.",
+    "hypotheses_for_next_change": "Run convergence and geometry sensitivity studies before changing physical parameters.",
+    "explicitly_changed_parameters": []
+  },
+  "experiment_id": "exp_001",
+  "timestamp_utc": "2026-05-17T02:29:12Z",
+  "changed_parameters_from_previous": []
+}

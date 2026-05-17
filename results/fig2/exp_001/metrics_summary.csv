@@ -1,0 +1,2 @@
+resonance_wavelength_nm,minimum_transmission,resonance_index,reference_curve_present,bandwidth_fwhm_nm,half_depth_transmission,left_half_depth_nm,right_half_depth_nm,reference_resonance_wavelength_nm,reference_minimum_transmission,resonance_shift_vs_reference_nm,minimum_transmission_delta_vs_reference
+577.0,0.9110038202455477,122,False,49.25949826430917,0.9548681807224064,558.4843642759666,607.7438625402758,,,,
