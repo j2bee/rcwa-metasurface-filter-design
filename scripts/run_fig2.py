@@ -125,12 +125,19 @@ def run_sweep(
     num_wavelengths: int,
     nG: int,
     q_ref: float,
+    period_nm: float | None = None,
+    height_nm: float | None = None,
 ) -> np.ndarray:
     if num_wavelengths < 1:
         raise ValueError("num_wavelengths must be at least 1")
 
     rcwa_module = _load_rcwa_module()
-    geometry_payload = build_unit_cell_geometry(diameter_nm=diameter_nm, grid_shape=grid_shape)
+    geometry_payload = build_unit_cell_geometry(
+        diameter_nm=diameter_nm,
+        period_nm=period_nm,
+        height_nm=height_nm,
+        grid_shape=grid_shape,
+    )
     wavelengths_nm = np.linspace(wavelength_start_nm, wavelength_stop_nm, num_wavelengths)
     rows = []
 
@@ -174,6 +181,8 @@ def parse_args() -> argparse.Namespace:
     start_nm, stop_nm = _default_wavelength_bounds()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--diameter-nm", type=float, default=default_diameter_nm())
+    parser.add_argument("--period-nm", type=float, default=None)
+    parser.add_argument("--height-nm", type=float, default=None)
     parser.add_argument("--grid-nx", type=int, default=128)
     parser.add_argument("--grid-ny", type=int, default=128)
     parser.add_argument("--wavelength-start-nm", type=float, default=start_nm)
@@ -196,9 +205,16 @@ def main() -> None:
     grid_shape = (args.grid_nx, args.grid_ny)
 
     if args.dry_run:
-        payload = build_unit_cell_geometry(diameter_nm=args.diameter_nm, grid_shape=grid_shape)
+        payload = build_unit_cell_geometry(
+            diameter_nm=args.diameter_nm,
+            period_nm=args.period_nm,
+            height_nm=args.height_nm,
+            grid_shape=grid_shape,
+        )
         print("Figure 2 wavelength sweep configuration")
         print(f"  diameter_nm: {args.diameter_nm}")
+        print(f"  period_nm: {args.period_nm}")
+        print(f"  height_nm: {args.height_nm}")
         print(f"  grid_shape: {grid_shape}")
         print(f"  wavelength_nm: {args.wavelength_start_nm} to {args.wavelength_stop_nm}")
         print(f"  num_wavelengths: {args.num_wavelengths}")
@@ -215,6 +231,8 @@ def main() -> None:
         num_wavelengths=args.num_wavelengths,
         nG=args.nG,
         q_ref=args.q_ref,
+        period_nm=args.period_nm,
+        height_nm=args.height_nm,
     )
     npy_path, csv_path = save_spectrum(spectrum, args.output_dir, args.output_stem)
     print(f"Saved NumPy spectrum: {npy_path}")

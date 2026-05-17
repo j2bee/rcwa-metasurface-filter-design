@@ -79,15 +79,25 @@ def diameter_sweep_nm(levels: int | None = None) -> tuple[float, ...]:
 
 def build_unit_cell_geometry(
     diameter_nm: float | None = None,
+    period_nm: float | None = None,
+    height_nm: float | None = None,
     grid_shape: tuple[int, int] = DEFAULT_GRID_SHAPE,
 ) -> dict[str, Any]:
     """Build the Figure 2 unit-cell geometry and rcwa_grad input payload."""
     if diameter_nm is None:
         diameter_nm = default_diameter_nm()
+    if period_nm is None:
+        period_nm = float(spec.UNIT_CELL["lattice"]["period"])
+    if height_nm is None:
+        height_nm = float(spec.UNIT_CELL["pillar"]["height"])
 
     nx, ny = grid_shape
     if nx <= 0 or ny <= 0:
         raise ValueError("grid_shape entries must be positive")
+    if period_nm <= 0:
+        raise ValueError("period_nm must be positive")
+    if height_nm <= 0:
+        raise ValueError("height_nm must be positive")
 
     diameter_bounds = spec.UNIT_CELL["pillar"]["diameter"]
     if not (diameter_bounds["minimum"] <= diameter_nm <= diameter_bounds["maximum"]):
@@ -97,8 +107,6 @@ def build_unit_cell_geometry(
         )
 
     wavelength_nm = float(spec.WAVELENGTHS["design"])
-    period_nm = float(spec.UNIT_CELL["lattice"]["period"])
-    height_nm = float(spec.UNIT_CELL["pillar"]["height"])
     dof_grid = _cylindrical_pillar_dof(diameter_nm, period_nm, grid_shape)
     dof_flat = _flatten_grid(dof_grid)
 
